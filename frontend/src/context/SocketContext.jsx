@@ -9,7 +9,14 @@ export const SocketProvider = ({ children }) => {
     const { userData } = useSelector((state) => state.user);
 
     useEffect(() => {
-        const socketInstance = io("https://nabilroghani-beanverse.hf.space", {transports: ["websocket"]}, { withCredentials: true });
+        // FIXED: Ek hi object ke andar saari configurations pass ki hain aur polling ko priority di hai
+        const socketInstance = io("https://nabilroghani-beanverse.hf.space", {
+            transports: ["polling", "websocket"],
+            withCredentials: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000
+        });
+        
         setSocket(socketInstance);
 
         socketInstance.on('connect', () => {

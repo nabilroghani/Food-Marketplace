@@ -18,24 +18,29 @@ import { checkDelayedOrders } from "./utils/orderDelay.js";
 const app = express();
 const server = http.createServer(app);
 
+// FIXED: CORS ke origin se trailing slash (/) hataya aur transports merge kiya
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://bean-verse-nu.vercel.app",
     credentials: true,
     methods: ['POST', 'GET']
-  }
+  },
+  transports: ["polling", "websocket"]
 })
 
 app.set("io", io)
 
+// FIXED: Port strictly production level par set kiya
+const port = process.env.PORT || 7860;
 
-const port = process.env.PORT || 5000;
+// FIXED: Express CORS middleware se bhi trailing slash (/) hata diya
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://bean-verse-nu.vercel.app",
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth", authRouter);
