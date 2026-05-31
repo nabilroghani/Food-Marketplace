@@ -20,8 +20,11 @@ const useGetCity = () => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
       dispatch(setLocation({ lat: latitude, lon: longitude }));
+      
+      // FIXED: { withCredentials: false } pass kiya taaki Geoapify CORS error na de
       const result = await axios.get(
-        `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=${apiKey}`
+        `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=${apiKey}`,
+        { withCredentials: false }
       );
       // console.log(result);
       // console.log(result.data.results[0].county);

@@ -64,8 +64,10 @@ const CheckOut = () => {
 
   const getAddressByLatLng = async (lat, lng) => {
     try {
+      // FIXED: { withCredentials: false } added to disable global cookie sending
       const result = await axios.get(
-        `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&format=json&apiKey=${apiKey}`
+        `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&format=json&apiKey=${apiKey}`,
+        { withCredentials: false }
       );
       dispatch(setAddress(result?.data?.results[0].address_line2));
     } catch (error) {
@@ -75,10 +77,12 @@ const CheckOut = () => {
 
   const getLatLngByAddress = async () => {
     try {
+      // FIXED: { withCredentials: false } added to prevent CORS wildcard block
       const result = await axios.get(
         `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(
           addressInput
-        )}&apiKey=${apiKey}`
+        )}&apiKey=${apiKey}`,
+        { withCredentials: false }
       );
       const { lat, lon } = result.data.features[0].properties;
       dispatch(setLocation({ lat, lon }));
