@@ -31,7 +31,7 @@ import { useSocket } from "./context/SocketContext.jsx";
 import { useDispatch } from "react-redux";
 import { updateMenuItemAvailability } from "./redux/userSlice.js";
 
-export const serverUrl = "https://nabilroghani-beanverse.hf.space/api";
+export const serverUrl = "https://nabilroghani-beanverse.hf.space";
 
 const App = () => {
   const { userData } = useSelector((state) => state.user);
